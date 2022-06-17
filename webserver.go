@@ -82,11 +82,15 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
 		w.Write(jsonData)
 	case "DELETE":
-		var employee Biodata
-		json.NewDecoder(r.Body).Decode(&employee)
-		delete(mapEmployees, employee.Id)
-		jsonData, _ := json.Marshal(mapEmployees)
-		w.Header().Add("Content-Type", "application/json")
-		w.Write(jsonData)
+		if paths[1] != "" {
+			fmt.Println(paths[1])
+			if Id, err := strconv.Atoi(paths[1]); err == nil {
+				delete(mapEmployees, Id)
+				jsonData, _ := json.Marshal(mapEmployees)
+				
+				w.Header().Add("Content-Type", "application/json")
+				w.Write(jsonData)
+			}
+		}
 	}
 }
